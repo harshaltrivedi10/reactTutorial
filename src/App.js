@@ -32,7 +32,7 @@ class App extends Component {
         age: 22
       },
       {
-        name: "Punit",
+        name: "Punit Patel",
         age: 23
       },
       {
