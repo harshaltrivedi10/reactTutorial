@@ -8,14 +8,17 @@ class App extends Component {
   state = {
     persons: [
       {
+        id: "a1",
         name: "Harshal",
         age: 22
       },
       {
+        id: "b2",
         name: "Punit",
         age: 23
       },
       {
+        id: "c3",
         name: "Kunj",
         age: 23
       }
@@ -50,24 +53,23 @@ class App extends Component {
     this.setState({persons: persons});
   }
 
-  nameChangedHandler = (event) => {
-    this.setState({persons: [
-      {
-        id: "a1",
-        name: "Harshal",
-        age: 22
-      },
-      {
-        id: "b2",
-        name: event.target.value,
-        age: 23
-      },
-      {
-        id: "c3",
-        name: "Kunj",
-        age: 24
-      }
-    ]});
+  nameChangedHandler = ( event, id ) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
+    });
+
+    // const person = this.state.persons[personIndex];
+    // const person = Object.assign({}, this.state.persons[personIndex]);
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({persons: persons});
   }
 
   togglePersonsHandler = () => {
@@ -78,7 +80,7 @@ class App extends Component {
   render() {
 
     const style = {
-      backgraounColor: 'white',
+      backgroundColor: 'white',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
@@ -93,10 +95,11 @@ class App extends Component {
           { this.state.persons.map((person, index) => {
             return (
               <Person
-                key = { person.name }
+                key = { person.id }
                 name = { person.name }
                 age = { person.age }
-                click = { () => this.deletePersonHandler(index) } />    
+                click = { () => this.deletePersonHandler(index) }
+                change = { (event) => this.nameChangedHandler(event, person.id) } />    
             );  
           }) }
         </div>
